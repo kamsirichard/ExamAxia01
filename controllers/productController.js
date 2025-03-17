@@ -36,10 +36,17 @@ const createProduct = async (req, res) => {
   try {
     const { name, price, category, stock } = req.body;
 
+    if (!name || !price || !category || stock === undefined) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     const product = new Product({ name, price, category, stock });
     await product.save();
 
-    res.status(201).json(product);
+    res.status(201).json({
+      message: "Product successfully added",
+      product,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -52,6 +59,10 @@ const updateProduct = async (req, res) => {
   try {
     const { name, price, category, stock } = req.body;
 
+    if (!name || !price || !category || stock === undefined) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     const product = await Product.findByIdAndUpdate(
       req.params.id,
       { name, price, category, stock },
@@ -62,7 +73,10 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.status(200).json(product);
+    res.status(200).json({
+      message: "Product successfully updated",
+      product,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

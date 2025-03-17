@@ -1,5 +1,10 @@
 const express = require("express");
-const { placeOrder, getUserOrders, updateOrderStatus, getAllOrders } = require("../controllers/orderController");
+const { 
+    placeOrder, 
+    getUserOrders, 
+    updateOrderStatus, 
+    getAllOrders 
+} = require("../controllers/orderController");
 const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();

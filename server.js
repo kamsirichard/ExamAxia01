@@ -23,7 +23,7 @@ app.use("/api/cart", require("./routes/cartRoutes"));
 
 // Default route
 app.get("/", (req, res) => {
-  res.send("Welcome to the E-commerce API!");
+  res.send("Oyanauhhhh!");
 });
 
 // Database Connection

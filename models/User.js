@@ -1,13 +1,12 @@
-const mongoose = require("mongoose");
+const express = require("express");
+const { registerUser, loginUser, getUserProfile, getUsers } = require("../controllers/userControllers");
+const protect = require("../middleware/authMiddleware");
 
-const UserSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    isAdmin: { type: Boolean, default: false },
-  },
-  { timestamps: true }
-);
+const router = express.Router();
 
-module.exports = mongoose.model("User", UserSchema);
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.get("/profile", protect, getUserProfile);
+router.get("/", protect, getUsers); // Admin route to get all users
+
+module.exports = router;
