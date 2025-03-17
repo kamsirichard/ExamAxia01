@@ -1,21 +1,12 @@
 const express = require("express");
-const Order = require("../models/Order");
+const { placeOrder, getUserOrders, updateOrderStatus, getAllOrders } = require("../controllers/orderController");
+const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// Create Order
-router.post("/", async (req, res) => {
-  const { userId, products, totalPrice } = req.body;
-  const order = new Order({ user: userId, products, totalPrice });
-
-  await order.save();
-  res.status(201).json(order);
-});
-
-// Get Orders (Admin)
-router.get("/", async (req, res) => {
-  const orders = await Order.find().populate("user").populate("products.product");
-  res.json(orders);
-});
+router.post("/", protect, placeOrder); // Place an order (User)
+router.get("/", protect, getUserOrders); // Get user-specific orders
+router.get("/all", protect, getAllOrders); // Get all orders (Admin Only)
+router.put("/:id", protect, updateOrderStatus); // Update order status (Admin Only)
 
 module.exports = router;
